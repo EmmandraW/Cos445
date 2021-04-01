@@ -76,6 +76,7 @@ public class Party_even_cut_even_choose implements Party {
         }
       }
     }
+
     return (closestWinDistrict != null) ? closestWinDistrict : furthestLossDistrict;
   }
 

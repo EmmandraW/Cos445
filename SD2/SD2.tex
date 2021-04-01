@@ -28,6 +28,7 @@
 You are allowed to work with other students, visit office hours, consult external references, etc., but \textbf{must} write up solutions on your own.  Please reference the course infosheet (\url{http://www.cs.princeton.edu/~smattw/Teaching/infosheet445sp20.pdf}) for a complete description of the collaboration policy. List any students you collaborated with, along with any lecture notes/online sources/etc. you consulted with \textbf{in your collaboration statement. Do not list any collaborators here!}
 
 \section*{Part A}
+%fractions -> easier when things are binary
 
 A good strategy would be to partition the blocks so that you can maximize the number of districts you win based on the percentage of blocks where you have the majority constituents. Very basically the area is broken into a group of blocks and all the blocks together is 100-percent of voters. Because there are only two districts, each district will have $\frac{N}{2}$ of the population.  Furthermore, this means that to win a district would require atleast $\frac{N}{2} * \frac{1}{2} + 1 = \frac{N}{4}+1$ voters.  Additionally, the way that Alpha draws the districts will dictate what the districts will look like.  This is because once Beta picks the district it "approves" of, there would be only one more district needed and it would automatically be the other district that Alpha drew that Beta didn't pick. This means, alpha does not need to consider which district Beta would choose, and alpha should just draw the districts so that they maximize the number of districts they win.
 \newline
@@ -48,7 +49,57 @@ The PARTITION problem is NP-Hard.  Thus, what we are trying to do is hard in gen
 
 \section*{Part B}
 
-When $d=3$, after Alpha initially proposes three districts, Beta should pick the district that maximizes their number total number of possible wins.  To do this, Beta should freeze one district at a time and reason about how many of the remaining two districts they could win.  Whichever, "frozen" district allows Beta to maximize payoff, they should choose that district and then redistrict such that they win as many possible districts.  
+When $d=3$, after Alpha initially proposes three districts, Beta should pick the district that maximizes their number total number of possible wins.  To do this, Beta should freeze one district at a time and reason about how many of the remaining two districts they could win.  Whichever, "frozen" district allows Beta to maximize payoff, they should choose that district and then redistrict such that they win as many possible districts. Since Alpha knows that Beta will try to maximize the total number of districts Beta wins, Alpha should try to partition the blocks such that it minimizes the number of districts that Beta can possibly win. This is optimal for Alpha because minimizing how many districts Beta wins maximizes how many districts Alpha wins. 
 \newline
+
+For d = 3 specifically, there are specific cases that we should look at. 
+\newline
+
+  There are four separate cases that we must observe when $d=3$ for Alpha: Alpha has $<\frac{1}{6}$ total votes, $>\frac{1}{6}$ and $<=\frac{1}{3}$ total votes, $>\frac{1}{3}$ but 
+  $< \frac{1}{2}$, and $>\frac{1}{2}$ total votes.
+  \newline
+
+
+In the case that Alpha has $<\frac{1}{6}$ total votes regardless of how they draw their districts, they cannot win any district . Because we have 3 districts, and each district has the same number of blocks, we know that each district will contain $\frac{1}{3}$ of the total blocks. This means that winning 1 district, requires at least  $> \frac{1}{6}$ of the total blocks. We know alpha has $<  \frac{1}{6}$, therefore they cannot win any district, and they can partition the blocks any way.
+\newline
+
+In the case that Alpha has $>\frac{1}{6}$ and $<=\frac{1}{3}$ total votes, Alpha should draw the three districts such that in two of the districts they lose and that in one of the districts they win.  If it requires $> \frac{1}{6}$ to win one district then we know that winning two districts requires $> \frac{1}{3}$. We know Alpha has $< \frac{1}{3}$ of the total votes, so they cannot win 2 districts, but they have $>\frac{1}{6}$, so they have enough to win one district, and this is the maximum that Alpha can win.
+\newline
+
+In the case that Alpha has $>\frac{1}{3}$ but $< \frac{1}{2}$ total votes, Alpha should draw the three districts such that they have a majority in 2 districts and a minority in the other. We have already established that you need $> \frac{1}{3}$ in order to win 2 districts because one district requires $> \frac{1}{6}$ therefore two requires $> \frac{1}{3}$. This is the maximum that Alpha will be able to win.
+\newline
+
+In the case that Alpha has $>\frac{1}{2}$ total votes they should draw the districts such that they have a  majority in all three districts. If we know that it requires  $> \frac{1}{6}$ total votes to win one district, and $> \frac{1}{3}$  total votes to win 2 districts, then it requires $> \frac{1}{2}$ total votes to win 3 districts.  This is the maximum number of districts Alpha can win.
+\newline
+
+\section*{Part C}
+The best overall strategy is one that combines part A and B. We will assume that our opponent will always act optimally, which means they will always try to maximize the number of districts that they can win. Therefore, we will also act optimally so that we minimize the number of districts they can win, thereby maximizing the number of districts we can win.
+\newline 
+
+Choose:  We are using a brute force algorithm to optimize our chances of winning as many districts as possible. Explicitly, this means that we go through and freeze one district at a time and keep track of the districts that we win and the percentage of votes we have in the remaining districts when we freeze that district. Then we choose the district such that it is a district that we won and won by a small margin, meaning we maximize how many votes we have in the remaining districts. If there is no district that we win, then we choose the district that our opponent wins by the largest margin, which is advantageous for us, because they lose a larger concentration of their voters.
+\newline
+
+Cut:  For cut, our strategy is simple.  If we have more votes than our opponent, we choose to cut the districts such that there is an even distribution of votes in each district. This means that winning a district means we would win by a small margin which will allow us a greater chance of winning more districts later on. However, if our opponent has more votes, we make uneven distributions of districts such that we pack up our opponents votes into districts. This means that we pack up the blocks with the most margin for our opponent's voters into one district and the same for us. This will allow us to get rid of our opponents voters more quickly which will give us a greater chance of winning more districts later on.
+\newline 
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+
+
+
+
+
+
+
+
+
 
 \end{document}
