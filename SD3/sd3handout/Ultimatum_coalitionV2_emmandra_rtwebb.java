@@ -8,19 +8,14 @@ public class Ultimatum_coalitionV2_emmandra_rtwebb implements Ultimatum {
     // Cheap talk on Bob
     // Propose on Alice
     // Accept on Bob
-
-    private int bobTalk; //said as bob
-    private int bobSawAlice; //saw alice say as bob
-    private boolean bobAccepted;
-    private int aliceSawCheap; // as alice saw bobs cheap
-    private int alicePropose; // as alice propose 
+    private int gamesAsBob = 0; // number of games I've played as Bob
+    private int opponentGamesAsBob; //number of games oponent played
+    private boolean inCoalition = false; //oponent in coalition or not
 
     private int cheap = 136393;
     private int warning = 99;
     private int verified = 0;
-    private int gamesAsBob = 0;
-    private int opponentGameAsBob;
-    private boolean inCoalition;
+   
   
     // The first three are the new opponent's last play as Bob
     // The next three are the new opponent's last play as Alice
@@ -36,25 +31,23 @@ public class Ultimatum_coalitionV2_emmandra_rtwebb implements Ultimatum {
         int opponentAsBobAcceptedCumulative,
         int opponentAsBobRejectedCumulative) {
 
-        bobTalk = opponentAsBobSaid;
-        bobSawAlice = opponentSawAliceSaid;
-        bobAccepted = opponentAsBobAccepted;
-        aliceSawCheap = opponentSawBobSaid;
-        alicePropose = opponentAsAliceSaid;
 
-        if((bobTalk == -1) && (bobSawAlice == -1) && (bobAccepted)){ 
-            bobSawAlice = verified;
-            bobAccepted = true;
+        if((opponentAsBobSaid == -1) && (opponentSawAliceSaid == -1) && (opponentAsBobAccepted)){
+            //bobTalk = cheap;
+            opponentSawAliceSaid = verified;
+            opponentAsBobAccepted = true;
         }
 
-        if((aliceSawCheap == -1) && (alicePropose == -1) && (opponentAsAliceWasAccepted)){
-            alicePropose = warning;
+        if((opponentSawBobSaid == -1) && (opponentAsAliceSaid == -1) && (opponentAsAliceWasAccepted)){
+            //aliceSawCheap = cheap;
+            opponentAsAliceSaid = warning;
+
         }
 
-        opponentGameAsBob = opponentAsBobAcceptedCumulative + opponentAsBobRejectedCumulative;
-        
-        if((bobSawAlice == verified || (!bobAccepted)) && 
-            (alicePropose == verified || alicePropose == warning)){
+        opponentGamesAsBob = opponentAsBobRejectedCumulative + opponentAsBobAcceptedCumulative;
+
+        if( (opponentSawAliceSaid == verified || !opponentAsBobAccepted) && 
+            (opponentAsAliceSaid == verified || opponentAsAliceSaid == warning) ){
             
             inCoalition = true;
         }
@@ -65,17 +58,18 @@ public class Ultimatum_coalitionV2_emmandra_rtwebb implements Ultimatum {
     public int cheapTalk() {
       // FCFCQQQ
       gamesAsBob++;
-      return (gamesAsBob * cheap + opponentGameAsBob) % 100;
+      return (gamesAsBob * cheap + opponentGamesAsBob) % 100;
     }
   
     // This method will be called on Alices to get their real proposal
     public int propose(int bobCheapTalk) {
-      opponentGameAsBob++;
-      if (bobCheapTalk == ((opponentGameAsBob * cheap + gamesAsBob) % 100) 
-          && inCoalition)
-          return verified;
+        opponentGamesAsBob++;
+        int hash = (opponentGamesAsBob * cheap + gamesAsBob) % 100;
+      if(bobCheapTalk == hash && inCoalition){
+        return verified;
+      }
       else{
-        return warning;
+          return warning;
       }
     }
   
@@ -91,4 +85,5 @@ public class Ultimatum_coalitionV2_emmandra_rtwebb implements Ultimatum {
       
     }
   }
+  
   

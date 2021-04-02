@@ -15,13 +15,11 @@ public class Ultimatum_coalition_emmandra_rtwebb implements Ultimatum {
     private int aliceSawCheap; // as alice saw bobs cheap
     private int alicePropose; // as alice propose 
 
-    private int cheap = 136393;
-    private int warning = 99;
+    private int cheap = 57;
+    private int warning = 96;
     private int verified = 0;
-    private int gamesAsBob = 0;
-    private int opponentGameAsBob;
-    private boolean inCoalition;
-  
+    private boolean inCoalition = false;
+
     // The first three are the new opponent's last play as Bob
     // The next three are the new opponent's last play as Alice
     // The defaults are -1, -1, accept (true) for each triple
@@ -42,43 +40,45 @@ public class Ultimatum_coalition_emmandra_rtwebb implements Ultimatum {
         aliceSawCheap = opponentSawBobSaid;
         alicePropose = opponentAsAliceSaid;
 
-        if((bobTalk == -1) && (bobSawAlice == -1) && (bobAccepted)){ 
+        if((bobTalk == -1) && (bobSawAlice == -1) && (bobAccepted)){
+            bobTalk = cheap;
             bobSawAlice = verified;
             bobAccepted = true;
         }
 
         if((aliceSawCheap == -1) && (alicePropose == -1) && (opponentAsAliceWasAccepted)){
+            aliceSawCheap = cheap;
             alicePropose = warning;
+
         }
 
-        opponentGameAsBob = opponentAsBobAcceptedCumulative + opponentAsBobRejectedCumulative;
-        
-        if((bobSawAlice == verified || (!bobAccepted)) && 
-            (alicePropose == verified || alicePropose == warning)){
-            
+        if((bobTalk == cheap) && 
+            (bobSawAlice == verified || !bobAccepted) && 
+            (aliceSawCheap == cheap || alicePropose == warning) &&
+            (alicePropose == verified || alicePropose == warning) &&
+            (bobSawAlice != warning)){
+
             inCoalition = true;
         }
-        
+
         }
-  
+
     // This method will be called on Bobs to get their cheap talk proposal
     public int cheapTalk() {
       // FCFCQQQ
-      gamesAsBob++;
-      return (gamesAsBob * cheap + opponentGameAsBob) % 100;
+      return cheap;
     }
-  
+
     // This method will be called on Alices to get their real proposal
     public int propose(int bobCheapTalk) {
-      opponentGameAsBob++;
-      if (bobCheapTalk == ((opponentGameAsBob * cheap + gamesAsBob) % 100) 
-          && inCoalition)
-          return verified;
+      if(bobCheapTalk == cheap && inCoalition){
+        return verified;
+      }
       else{
-        return warning;
+          return warning;
       }
     }
-  
+
     // This method will be called on Bobs to see if they accept Alice's proposal
     public boolean accept(int aliceProposal) {
         //add cheap talk of cheap 
@@ -88,7 +88,8 @@ public class Ultimatum_coalition_emmandra_rtwebb implements Ultimatum {
         else{
             return false;
         }
-      
+
     }
   }
+
   
