@@ -2,7 +2,7 @@
 // COS 445, Spring 2018
 // Created by Andrew Wonnacott
 
-public class Ultimatum_coalitionV2_emmandra_rtwebb implements Ultimatum {
+public class Ultimatum_emmandra implements Ultimatum {
     // We will instantiate an Alice and a Bob, then call methods as follows:
     // Setup on Alice and Bob in no particular order
     // Cheap talk on Bob
