@@ -3,8 +3,6 @@
 // Modified by Andrew Wonnacott
 
 import java.util.List;
-private double budget = Auctioneer.defaultConfig.getBudget();
-private static final double factor = 1;
 
 public interface Bidder {
   // Return your bid for the current day
