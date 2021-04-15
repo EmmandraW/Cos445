@@ -8,11 +8,13 @@ public class Bidder_truthful implements Bidder {
   private double budget = Auctioneer.defaultConfig.getBudget();
   private static final double factor = 1;
 
+
   // given your value for the day, determine an action
   public double getBid(double v) {
     return Math.min(v * factor, budget);
   }
 
+  //average of passed winning bids
   // callback function with results
   public void addResults(List<Double> bids, int myBid, double myPayment) {
     // record my utility and budget
