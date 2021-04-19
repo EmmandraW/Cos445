@@ -3,7 +3,6 @@ import java.util.List;
 public class Bidder_webbWright1 implements Bidder{
     private double budget = Auctioneer.defaultConfig.getBudget();
     private static final double factor = 1;
-    private double avg = 0;
     private double initial = 35000;
     private double minimum = 5;
     private int round = 1;
@@ -28,7 +27,6 @@ public class Bidder_webbWright1 implements Bidder{
     for(int i = 0; i < bids.size(); i++){
       double bid = bids.get(i);
       sum += bid;
-      initial -= bid;
     }
 
     round++;

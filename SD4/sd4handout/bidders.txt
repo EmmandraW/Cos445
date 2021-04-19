@@ -68,9 +68,8 @@ truthful
 truthful
 truthful
 truthful
-ultimate
-average
-totalAvg
-totalAvg
-average
-ultimate
+webbWright1
+webbWright2
+webbWright3
+webbWright4
+webbWright5
